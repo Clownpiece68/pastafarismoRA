@@ -1,16 +1,66 @@
+
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Pastafarismo RA</title>
 
     <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-face-aframe.prod.js"></script>
 
-    <!-- CSS -->
     <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        .screen {
+            width: 100%;
+            height: 100vh;
+        }
+
         .hidden {
             visibility: hidden;
             pointer-events: none;
+        }
+
+        #home, #preview {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #filters {
+            position: relative;
+        }
+
+        a-scene {
+            width: 100%;
+            height: 100%;
+        }
+
+        .filter-controls {
+            position: absolute;
+            bottom: 30px;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            z-index: 10;
+        }
+
+        button {
+            padding: 12px 18px;
+            cursor: pointer;
+        }
+
+        #photo-preview {
+            max-width: 90%;
+            max-height: 70%;
         }
     </style>
 </head>
@@ -19,14 +69,15 @@
 
     <!-- HOME SCREEN -->
     <section id="home" class="screen">
+        <h1>Pastafarismo RA</h1>
+        <p>Put a pasta strainer on your head!</p>
         <button id="start" onclick="startAR()">Start</button>
     </section>
 
 
-    <!-- FILTER VIEWER -->
+    <!-- AR FILTER SCREEN -->
     <section id="filters" class="screen hidden">
 
-        <!-- MINDAR SCENE -->
         <a-scene
             mindar-face="autoStart: false"
             embedded
@@ -35,16 +86,28 @@
             vr-mode-ui="enabled: false"
             device-orientation-permission-ui="enabled: false">
 
-            <!-- CAMERA -->
-            <a-camera active="false" position="0 0 0"></a-camera>
+            <a-camera
+                active="false"
+                position="0 0 0">
+            </a-camera>
 
-            <!-- FACE TRACKING -->
+            <!-- FACE TRACKING ANCHOR -->
             <a-entity mindar-face-target="anchorIndex: 1">
 
-                <!-- CURRENT MODEL -->
+                <!-- TEST BOX: SHOULD APPEAR ON YOUR FACE -->
+                <a-box
+                    color="red"
+                    position="0 0 0"
+                    scale="0.1 0.1 0.1">
+                </a-box>
+
+                <!-- 3D MODEL -->
                 <a-entity
                     id="model"
-                    gltf-model="./plastico.glb">
+                    gltf-model="./plastico.glb"
+                    position="0 0 0"
+                    rotation="0 0 0"
+                    scale="0.1 0.1 0.1">
                 </a-entity>
 
             </a-entity>
@@ -54,50 +117,33 @@
 
         <!-- FILTER CONTROLS -->
         <div class="filter-controls">
-
-            <button id="previous-filter" onclick="previousModel()">
-                Previous
-            </button>
-
-            <button id="next-filter" onclick="nextModel()">
-                Next
-            </button>
-
-            <button id="take-photo" onclick="showScreen('preview')">
-                Take picture
-            </button>
-
+            <button onclick="previousModel()">Previous</button>
+            <button onclick="nextModel()">Next</button>
+            <button onclick="showScreen('preview')">Take picture</button>
         </div>
 
     </section>
 
 
-    <!-- PHOTO PREVIEW -->
+    <!-- PHOTO PREVIEW SCREEN -->
     <section id="preview" class="screen hidden">
+        <h2>Your picture</h2>
 
-        <img id="photo-preview" alt="Photo preview">
+        <img id="photo-preview" alt="Captured photo">
 
-        <button id="save-photo">
-            Save
-        </button>
-
-        <button id="discard-photo" onclick="showScreen('filters')">
-            Return
-        </button>
-
+        <button id="save-photo">Save</button>
+        <button onclick="showScreen('filters')">Return</button>
     </section>
 
 
-    <!-- JAVASCRIPT -->
     <script>
 
+        // --------------------------------
         // REFERENCES
+        // --------------------------------
 
         const scene = document.querySelector("a-scene");
         const model = document.querySelector("#model");
-
-
-        // AVAILABLE MODELS
 
         const models = [
             "plastico",
@@ -109,7 +155,9 @@
         let arStarted = false;
 
 
-        // NAVIGATION
+        // --------------------------------
+        // SCREEN NAVIGATION
+        // --------------------------------
 
         function showScreen(screenId) {
 
@@ -118,13 +166,14 @@
             });
 
             document.getElementById(screenId).classList.remove("hidden");
-
         }
 
 
-        // INITIALIZE AR
+        // --------------------------------
+        // START AR
+        // --------------------------------
 
-        function startAR() {
+        async function startAR() {
 
             showScreen("filters");
 
@@ -132,14 +181,24 @@
 
             const arSystem = scene.systems["mindar-face-system"];
 
-            arSystem.start();
+            if (!arSystem) {
+                console.error("MindAR system not found!");
+                return;
+            }
 
-            arStarted = true;
-
+            try {
+                await arSystem.start();
+                arStarted = true;
+                console.log("AR started successfully!");
+            } catch (error) {
+                console.error("Could not start AR:", error);
+            }
         }
 
 
-        // CHANGE MODEL
+        // --------------------------------
+        // MODEL SWITCHING
+        // --------------------------------
 
         function changeModel(modelId) {
 
@@ -154,11 +213,8 @@
                 "gltf-model",
                 `./${modelId}.glb`
             );
-
         }
 
-
-        // NEXT MODEL
 
         function nextModel() {
 
@@ -169,11 +225,8 @@
             }
 
             changeModel(models[currentModel]);
-
         }
 
-
-        // PREVIOUS MODEL
 
         function previousModel() {
 
@@ -184,25 +237,28 @@
             }
 
             changeModel(models[currentModel]);
-
         }
 
 
+        // --------------------------------
         // MODEL LOADING EVENTS
+        // --------------------------------
 
         model.addEventListener("model-loaded", () => {
-
             console.log("Model successfully loaded!");
-
         });
 
 
         model.addEventListener("model-error", (event) => {
-
             console.error("Model loading error:", event.detail);
-
         });
 
+
+        // --------------------------------
+        // INITIALIZATION
+        // --------------------------------
+
+        console.log("Pastafarismo RA initialized!");
 
     </script>
 
