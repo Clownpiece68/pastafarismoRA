@@ -36,14 +36,12 @@
 
             <a-camera active="false" position="0 0 0"></a-camera>
 
-			 <a-assets>
                 <a-asset-item id="plastico"
                     src="./plastico.glb"></a-asset-item>
                 <a-asset-item id="dobleasa"
                     src="./dobleasa.glb"></a-asset-item>
                 <a-asset-item id="unaasa"
                     src="./unaasa.glb"></a-asset-item>
-            </a-assets>
 
             <a-entity mindar-face-target="anchorIndex: 1">
 				<a-entity
@@ -74,7 +72,11 @@
     <script>
 		const scene = document.querySelector("a-scene");
 		const model = document.querySelector("#model");
-		const models = ["plastico","dobleasa","unaasa"];
+		const models = [
+    "plastico",
+    "dobleasa",
+    "unaasa"
+];
 		let currentModel = 0;
 		
 		// Funcion para cambiar de secciones
@@ -95,24 +97,14 @@
 		// Funcionnes para cambiar modelos 
 		function changeModel(modelId) {
 
-    const asset = document.querySelector(`#${modelId}`);
+    console.log("Loading:", modelId);
 
-    console.log("Selected model:", modelId);
-    console.log("Asset element:", asset);
+    model.setAttribute(
+        "gltf-model",
+        `./${modelId}.glb`
+    );
 
-    if (!asset) {
-        console.error("Asset ID not found:", modelId);
-        return;
-    }
-			}
-
-    const src = asset.getAttribute("src");
-
-    console.log("Original path:", src);
-    console.log("Resolved URL:", new URL(src, document.baseURI).href);
-
-    model.setAttribute("gltf-model", `#${modelId}`);
-
+}
 		function nextModel() {
 			currentModel++;
 			if (currentModel >= models.length) {
@@ -127,6 +119,13 @@
 			}
 			changeModel(models[currentModel]);
 		}
+
+		model.addEventListener("model-loaded", () => {
+    console.log("Model successfully loaded!");
+});
+
+model.addEventListener("model-error", (event) => {
+    console.error("Model loading error:", event.detail);
 	</script>
 
 	  
@@ -135,7 +134,7 @@
 
 
 <!-- Si sale esto es que ya se actualizo ¯\_(ツ)_/¯ -->
-<!-- # de veces actualizado: 20 -->
+<!-- # de veces actualizado: 21 -->
 
 <!-- Abner-Sama! <3/ -->
 
