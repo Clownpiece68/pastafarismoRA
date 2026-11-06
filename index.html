@@ -170,12 +170,10 @@
     console.log("Taking picture...");
 
     const video = document.querySelector("video");
-
-    // Get the actual WebGL canvas used by A-Frame
     const arCanvas = scene.renderer?.domElement;
 
     if (!video || !arCanvas) {
-        console.error("Camera video or AR renderer canvas not found!");
+        console.error("Camera video or AR canvas not found!");
         return;
     }
 
@@ -184,10 +182,8 @@
         return;
     }
 
-    // Wait for the next animation frame
     await new Promise(resolve => requestAnimationFrame(resolve));
 
-    // Create the final photograph canvas
     const photoCanvas = document.createElement("canvas");
 
     const width = video.videoWidth;
@@ -198,13 +194,32 @@
 
     const context = photoCanvas.getContext("2d");
 
-    // Draw camera
-    context.drawImage(video, 0, 0, width, height);
+    // 1. Flip the camera image horizontally
+    context.save();
 
-    // Draw the actual A-Frame rendering over the camera
-    context.drawImage(arCanvas, 0, 0, width, height);
+    context.translate(width, 0);
+    context.scale(-1, 1);
 
-    // Generate image
+    context.drawImage(
+        video,
+        0,
+        0,
+        width,
+        height
+    );
+
+    context.restore();
+
+    // 2. Draw the AR model normally
+    context.drawImage(
+        arCanvas,
+        0,
+        0,
+        width,
+        height
+    );
+
+    // 3. Generate the final image
     photoCanvas.toBlob((blob) => {
 
         if (!blob) {
@@ -250,7 +265,7 @@
 
 
 <!-- Si sale esto es que ya se actualizo ¯\_(ツ)_/¯ -->
-<!-- # de veces actualizado: 34 -->
+<!-- # de veces actualizado: 35 -->
 
 <!-- Abner-Sama! <3/ -->
 
