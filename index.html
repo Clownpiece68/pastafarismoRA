@@ -1,174 +1,210 @@
+<!DOCTYPE html>
 <html>
-  <head>
+<head>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+
     <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-face-aframe.prod.js"></script>
 
-      <!-- CSSSHIT -->
-	  <style>
+    <!-- CSS -->
+    <style>
         .hidden {
-			visibility: hidden;
-			pointer-events: none;
-		}
+            visibility: hidden;
+            pointer-events: none;
+        }
+    </style>
+</head>
 
-       </style>
-  </head>
-  <body>
-	  <!-- SECCIONES DE LA PAGINA -->
+<body>
 
-	  <!-- ||SECCION DE INICIO|| -->
-	<section id="home" class="screen">
-		<button id="start" onclick="startAR()">Start</button>
+    <!-- HOME SCREEN -->
+    <section id="home" class="screen">
+        <button id="start" onclick="startAR()">Start</button>
     </section>
 
 
-	  <!-- ||SECCION DE FILTROS|| -->
+    <!-- FILTER VIEWER -->
     <section id="filters" class="screen hidden">
 
-    <!-- Armado de MindAR -->
+        <!-- MINDAR SCENE -->
         <a-scene
-          mindar-face="autoStart: false"
-          embedded
-          color-space="sRGB"
-          renderer="colorManagement: true, physicallyCorrectLights"
-          vr-mode-ui="enabled: false"
-          device-orientation-permission-ui="enabled: false">
+            mindar-face="autoStart: false"
+            embedded
+            color-space="sRGB"
+            renderer="colorManagement: true, physicallyCorrectLights"
+            vr-mode-ui="enabled: false"
+            device-orientation-permission-ui="enabled: false">
 
+            <!-- CAMERA -->
             <a-camera active="false" position="0 0 0"></a-camera>
 
-                <a-asset-item id="plastico"
-                    src="./plastico.glb"></a-asset-item>
-                <a-asset-item id="dobleasa"
-                    src="./dobleasa.glb"></a-asset-item>
-                <a-asset-item id="unaasa"
-                    src="./unaasa.glb"></a-asset-item>
-
+            <!-- FACE TRACKING -->
             <a-entity mindar-face-target="anchorIndex: 1">
-				<a-entity
-					id="model"
-					gltf-model="#plastico">
-				</a-entity>
-			</a-entity>
+
+                <!-- CURRENT MODEL -->
+                <a-entity
+                    id="model"
+                    gltf-model="./plastico.glb">
+                </a-entity>
+
+            </a-entity>
 
         </a-scene>
 
-    <!-- controles -->
+
+        <!-- FILTER CONTROLS -->
         <div class="filter-controls">
-            <button id="previous-filter" onclick="previousModel()">Previous</button>
-            <button id="next-filter" onclick="nextModel()">Next</button>
-            <button id="take-photo" onclick="showScreen('preview')">Take picture</button>
+
+            <button id="previous-filter" onclick="previousModel()">
+                Previous
+            </button>
+
+            <button id="next-filter" onclick="nextModel()">
+                Next
+            </button>
+
+            <button id="take-photo" onclick="showScreen('preview')">
+                Take picture
+            </button>
+
         </div>
+
     </section>
 
-	<!-- ||SECCION DE FOTO|| -->
+
+    <!-- PHOTO PREVIEW -->
     <section id="preview" class="screen hidden">
-        <img id="photo-preview">
-        <button id="save-photo">Save</button>
-        <button id="discard-photo" onclick="showScreen('filters')">Return</button>
+
+        <img id="photo-preview" alt="Photo preview">
+
+        <button id="save-photo">
+            Save
+        </button>
+
+        <button id="discard-photo" onclick="showScreen('filters')">
+            Return
+        </button>
+
     </section>
 
-<!-- JAVASHIT -->
-	 
+
+    <!-- JAVASCRIPT -->
     <script>
-		const scene = document.querySelector("a-scene");
-		const model = document.querySelector("#model");
-		const models = [
-    "plastico",
-    "dobleasa",
-    "unaasa"
-];
-		let currentModel = 0;
-		
-		// Funcion para cambiar de secciones
-		function showScreen(screenId) {
+
+        // REFERENCES
+
+        const scene = document.querySelector("a-scene");
+        const model = document.querySelector("#model");
+
+
+        // AVAILABLE MODELS
+
+        const models = [
+            "plastico",
+            "dobleasa",
+            "unaasa"
+        ];
+
+        let currentModel = 0;
+        let arStarted = false;
+
+
+        // NAVIGATION
+
+        function showScreen(screenId) {
+
             document.querySelectorAll(".screen").forEach(screen => {
-              screen.classList.add("hidden");
-	        });
+                screen.classList.add("hidden");
+            });
+
             document.getElementById(screenId).classList.remove("hidden");
+
         }
 
-		// Funcion para inicializar el AR
+
+        // INITIALIZE AR
+
         function startAR() {
+
             showScreen("filters");
+
+            if (arStarted) return;
+
             const arSystem = scene.systems["mindar-face-system"];
+
             arSystem.start();
+
+            arStarted = true;
+
         }
 
-		// Funcionnes para cambiar modelos 
-		function changeModel(modelId) {
 
-    console.log("Loading:", modelId);
+        // CHANGE MODEL
 
-    model.setAttribute(
-        "gltf-model",
-        `./${modelId}.glb`
-    );
+        function changeModel(modelId) {
 
-}
-		function nextModel() {
-			currentModel++;
-			if (currentModel >= models.length) {
-				currentModel = 0;
-			}
-			changeModel(models[currentModel]);
-		}
-		function previousModel() {
-			currentModel--;
-			if (currentModel < 0) {
-				currentModel = models.length - 1;
-			}
-			changeModel(models[currentModel]);
-		}
+            if (!model) {
+                console.error("Model entity not found!");
+                return;
+            }
 
-		model.addEventListener("model-loaded", () => {
-    console.log("Model successfully loaded!");
-});
+            console.log("Loading model:", modelId);
 
-model.addEventListener("model-error", (event) => {
-    console.error("Model loading error:", event.detail);
-	</script>
+            model.setAttribute(
+                "gltf-model",
+                `./${modelId}.glb`
+            );
 
-	  
-  </body>
+        }
+
+
+        // NEXT MODEL
+
+        function nextModel() {
+
+            currentModel++;
+
+            if (currentModel >= models.length) {
+                currentModel = 0;
+            }
+
+            changeModel(models[currentModel]);
+
+        }
+
+
+        // PREVIOUS MODEL
+
+        function previousModel() {
+
+            currentModel--;
+
+            if (currentModel < 0) {
+                currentModel = models.length - 1;
+            }
+
+            changeModel(models[currentModel]);
+
+        }
+
+
+        // MODEL LOADING EVENTS
+
+        model.addEventListener("model-loaded", () => {
+
+            console.log("Model successfully loaded!");
+
+        });
+
+
+        model.addEventListener("model-error", (event) => {
+
+            console.error("Model loading error:", event.detail);
+
+        });
+
+
+    </script>
+
+</body>
 </html>
-
-
-<!-- Si sale esto es que ya se actualizo ¯\_(ツ)_/¯ -->
-<!-- # de veces actualizado: 21 -->
-
-<!-- Abner-Sama! <3/ -->
-
-<!--
-
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣿⡟⠈⠘⡅⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⣼⡟⠁⠀⠀⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⡽⠋⠀⠀⠀⡰⠇⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣀⣄⣀⠀⢀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⡰⢡⠞⠀⠀⠀⠀⣠⡏⠀⠀⠀⠀⠀⠀⠀⠀⠀⡾⠁⠀⠀⠀⠉⠉⠑⠠⣄⣀⠀⠄⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⡊⣠⠏⠀⠀⠀⣠⠞⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⠁⣧⢣⡀⠀⠀⠀⠀⠀⠀⠀⢱⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠘⢱⣿⠀⠀⠴⢫⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡞⠀⠻⡄⢱⢦⣤⣤⣤⡀⠀⠀⠀⢇⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⢠⢸⠏⢧⠠⠄⢸⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢰⡇⠀⠀⣍⣈⣿⡿⠿⣿⣿⣷⣔⠀⠘⡄⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⢸⠀⠀⡾⠀⠀⢸⡧⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⠇⠀⣸⠏⢹⣿⣷⡇⠈⠙⠉⠉⣷⠀⢸⡆⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⢰⠀⣿⠃⠀⠀⢸⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣼⠀⠀⣿⠀⣻⣿⣿⡇⠀⠀⠀⠀⢹⠀⣬⢧⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠰⡐⣿⡀⠀⠀⣿⢅⡄⠀⠀⠀⠀⠀⠀⢀⣠⠞⠀⠀⢰⣿⣿⣿⣱⠟⠀⠀⠀⠠⠚⠀⠐⠃⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⣧⣘⣧⣰⣦⡿⠭⠽⠿⠜⠛⠚⠒⡼⠋⠀⢀⣠⣶⣿⣿⡿⠛⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⢾⡿⠿⣧⣿⡧⠀⠀⠀⠀⠀⠀⣠⡅⣠⣾⠿⣻⣿⠛⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⢀⡔⠋⠀⠀⠙⠒⠃⠀⠀⠀⠀⠀⠰⣻⣿⣿⣿⠞⠁⠀⠓⣆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⣠⠎⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢄⠀⠀⠀⠉⠉⠁⠀⠀⠀⠀⠈⢆⠱⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⡰⠁⠀⠀⠀⠀⠀⠀⢺⡄⠀⠀⠡⠈⡆⠄⢡⣘⡆⠀⠄⠀⠀⠀⠀⠈⣟⠂⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⣲⠃⡄⠀⠀⠀⡄⠀⢸⡎⠘⡀⠠⠤⡒⣃⣟⠉⠁⠘⠀⠸⠀⠀⠀⠀⠢⡈⠌⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠠⢠⠇⣼⠀⠀⠀⠀⡇⠠⢸⡇⠀⣧⣰⡰⠔⢎⣡⣤⣀⣐⡃⠀⡅⠠⠀⠀⠀⢣⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⢸⢠⢿⠀⡀⠀⠀⠀⢠⠘⠇⠀⠙⠁⢀⡴⠋⠁⠀⠈⢛⢆⠀⡇⠀⡄⢰⠀⢸⢆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⢠⢸⠇⠸⠀⢣⠀⠀⢠⡸⡟⠒⠄⠀⠀⠈⠀⠀⠀⠐⠋⠁⡎⠀⣿⠀⡇⢸⠀⠸⣼⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠈⠎⠀⠀⠰⠈⢦⠀⠀⢹⡓⠒⠲⠀⠀⠀⡠⠀⠀⠀⠀⢰⠃⠀⡏⠀⡇⢸⠀⠀⡯⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⢠⢈⡆⠀⠀⡟⣄⠀⠀⠐⠁⠀⠀⠀⢀⡠⢿⠀⠀⡇⠀⡅⡼⠀⠀⢇⠠⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⢙⡗⠀⠀⠀⠈⡍⠒⠢⠤⢤⡴⠚⠉⢀⡜⠀⢠⣅⣀⠃⠁⠀⠀⠈⢇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⣾⠀⠀⠀⠀⠀⠁⡰⠊⢱⠋⠁⢀⡠⠚⢀⠀⣼⣤⡈⢳⣤⡀⠀⠀⠈⠳⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⣰⠃⠀⠀⠀⢀⡴⣿⠁⠀⣸⡦⠘⠁⠀⠀⣸⢠⣿⣿⣴⣾⣿⣿⢦⠀⠀⠀⠸⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⢀⠎⠀⠀⠀⠘⣯⠀⡼⢠⡎⠉⡇⠀⣀⢴⢾⠁⢸⣿⣿⣿⣿⣿⣿⣿⣷⠀⠀⠀⠈⢦⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⢠⠊⠀⠀⠀⢰⣼⠟⣷⡇⢸⣇⣠⣧⠚⣱⠃⣿⠀⣾⣿⣿⣿⣿⣿⡿⣻⣿⡆⠀⠀⠀⠀⠱⣄⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⢠⠃⠀⠀⠀⢠⢻⣏⣤⣹⡧⠚⠛⡷⠀⢠⣣⡞⠻⠀⣿⣿⣿⣿⣿⣿⢳⣿⣿⣿⡀⠀⢀⠀⠀⠘⢤⠀⠀⠀⠀⠀
-⠀⡠⠰⠃⠀⠀⠀⢀⣾⣾⣿⣿⣿⡇⠀⢀⡇⡰⢣⣷⣤⣴⠀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⢷⡀⠀⢆⠀⠀⠀⠑⢤⠀⠀⠀
-⢠⠃⠀⠀⠀⠀⠀⡜⣼⣿⣿⣿⣿⣷⡴⠋⣀⣼⣿⣿⡟⠛⠀⠟⠿⢿⣿⣿⣿⣿⣿⣿⣿⡟⣷⠀⠈⠆⠀⠀⠀⢌⠱⡐⢄
-⢸⠀⠀⠀⠀⠀⠠⣷⣿⣿⣿⣿⣿⣥⣴⣾⣿⣿⠟⠻⣷⣶⣶⣤⣤⣿⣿⣿⣿⣿⣿⣿⣿⣿⢿⠀⠀⠈⠄⠠⠀⠀⢦⠑⢾
-
- -->
