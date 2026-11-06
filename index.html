@@ -166,82 +166,49 @@
 
         // Tomar foto
         async function capturePhoto() {
-
-    console.log("Taking picture...");
-
-    const video = document.querySelector("video");
-    const arCanvas = scene.renderer?.domElement;
-
-    if (!video || !arCanvas) {
-        console.error("Camera video or AR canvas not found!");
-        return;
-    }
-
-    if (video.readyState < 2) {
-        console.error("Camera is not ready yet!");
-        return;
-    }
-
-    await new Promise(resolve => requestAnimationFrame(resolve));
-
-    const photoCanvas = document.createElement("canvas");
-
-    const width = video.videoWidth;
-    const height = video.videoHeight;
-
-    photoCanvas.width = width;
-    photoCanvas.height = height;
-
-    const context = photoCanvas.getContext("2d");
-
-    // 1. Flip the camera image horizontally
-    context.save();
-
-    context.translate(width, 0);
-    context.scale(-1, 1);
-
-    context.drawImage(
-        video,
-        0,
-        0,
-        width,
-        height
-    );
-
-    context.restore();
-
-    // 2. Draw the AR model normally
-    context.drawImage(
-        arCanvas,
-        0,
-        0,
-        width,
-        height
-    );
-
-    // 3. Generate the final image
-    photoCanvas.toBlob((blob) => {
-
-        if (!blob) {
-            console.error("Could not create photo!");
-            return;
+            console.log("Haciendo foto");
+            const video = document.querySelector("video");
+            const arCanvas = scene.renderer?.domElement;
+            if (!video || !arCanvas) {
+                console.error("Onta la camara o canvas pa");
+                return;
+            }
+            if (video.readyState < 2) {
+                console.error("No esta lista la camara pa");
+                return;
+            }
+            await new Promise(resolve => requestAnimationFrame(resolve));
+            const photoCanvas = document.createElement("canvas");
+            const width = video.videoWidth;
+            const height = video.videoHeight;
+            photoCanvas.width = width;
+            photoCanvas.height = height;
+            const context = photoCanvas.getContext("2d");
+            // Voltea la imagen y la dibuja
+            context.save();
+            context.translate(width, 0);
+            context.scale(-1, 1);
+            context.drawImage(video, 0, 0, width, height);
+            context.restore();
+            // Dibuja el modelo AR
+            context.drawImage(arCanvas, 0, 0, width, height);
+            // Genera la imagen final
+            photoCanvas.toBlob((blob) => {
+                if (!blob) {
+                    console.error("No se pudo crear la imagen pa");
+                    return;
+                }
+                // Si ya habia otra foto, la remplaza
+                if (photoURL) {
+                    URL.revokeObjectURL(photoURL);
+                }
+                photoURL = URL.createObjectURL(blob);
+                previewImage.src = photoURL;
+                // Manda al preview
+                showScreen("preview");
+                console.log("Ya quedo precioso");
+            }, "image/png");
         }
-
-        // Replace previous photo
-        if (photoURL) {
-            URL.revokeObjectURL(photoURL);
-        }
-
-        photoURL = URL.createObjectURL(blob);
-
-        previewImage.src = photoURL;
-
-        showScreen("preview");
-
-        console.log("Picture captured successfully!");
-
-    }, "image/png");
-}
 
         // Guardar la foto
          function savePhoto() {
@@ -265,7 +232,7 @@
 
 
 <!-- Si sale esto es que ya se actualizo ¯\_(ツ)_/¯ -->
-<!-- # de veces actualizado: 35 -->
+<!-- # de veces actualizado: 36 -->
 
 <!-- Abner-Sama! <3/ -->
 
