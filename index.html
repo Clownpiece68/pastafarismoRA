@@ -10,10 +10,6 @@
             display: none;
         }
 
-		a-scene {
-          width: 100vw;
-          height: 100vh;
-        }
        </style>
   </head>
   <body>
@@ -21,7 +17,7 @@
 
 	  <!-- ||SECCION DE INICIO|| -->
 	<section id="home" class="screen">
-		<button id="start" onclick="showScreen('filters')">Start</button>
+		<button id="start" onclick="startAR()">Start</button>
     </section>
 
 
@@ -66,13 +62,20 @@
 <!-- JAVASHIT -->
 	 
     <script>
+		const scene = document.querySelector("a-scene");
+		// Funcion para cambiar de secciones
 		function showScreen(screenId) {
-            // Oculta todo
             document.querySelectorAll(".screen").forEach(screen => {
               screen.classList.add("hidden");
 	        });
-            // Luego muestra
             document.getElementById(screenId).classList.remove("hidden");
+        }
+
+		// Funcion para inicializar el AR
+        function startAR() {
+            showScreen("filters");
+            const arSystem = scene.systems["mindar-face-system"];
+            arSystem.start();
         }
 	</script>
 
@@ -82,7 +85,7 @@
 
 
 <!-- Si sale esto es que ya se actualizo ¯\_(ツ)_/¯ -->
-<!-- # de veces actualizado: 10 -->
+<!-- # de veces actualizado: 11 -->
 
 <!-- Abner-Sama! <3/ -->
 
