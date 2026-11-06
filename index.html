@@ -6,8 +6,8 @@
 
       <!-- CSSSHIT -->
 	  <style>
-        .hidden {
-            display: none;
+        .visibility: hidden;
+        pointer-events: none;
         }
 
        </style>
@@ -38,7 +38,8 @@
 			<!-- Modelos -->
             <a-entity mindar-face-target="anchorIndex: 1">
 
-                <a-sphere id="green" color="green" radius="0.1"></a-sphere>
+				<a-assets>
+                    <a-sphere color="green" radius="0.1"> </a-sphere>
 
             </a-entity>
 
@@ -46,8 +47,8 @@
 
     <!-- controles -->
         <div class="filter-controls">
-            <button id="previous-filter">Previous</button>
-            <button id="next-filter">Next</button>
+            <button id="previous-filter" onclick="previousModel()">Previous</button>
+            <button id="next-filter" onclick="nextModel()">Next</button>
             <button id="take-photo" onclick="showScreen('preview')">Take picture</button>
         </div>
     </section>
@@ -63,6 +64,10 @@
 	 
     <script>
 		const scene = document.querySelector("a-scene");
+		const model = document.querySelector("#model");
+		const models = ["plastico","dobleasa","unaasa"];
+		let currentModel = 0;
+		
 		// Funcion para cambiar de secciones
 		function showScreen(screenId) {
             document.querySelectorAll(".screen").forEach(screen => {
@@ -77,6 +82,25 @@
             const arSystem = scene.systems["mindar-face-system"];
             arSystem.start();
         }
+
+		// Funcionnes para cambiar modelos 
+		function changeModel(modelId) {
+			model.setAttribute("gltf-model", `#${modelId}`);
+		}
+		function nextModel() {
+			currentModel++;
+			if (currentModel >= models.length) {
+				currentModel = 0;
+			}
+			changeModel(models[currentModel]);
+		}
+		function previousModel() {
+			currentModel--;
+			if (currentModel < 0) {
+				currentModel = models.length - 1;
+			}
+			changeModel(models[currentModel]);
+		}
 	</script>
 
 	  
@@ -85,7 +109,7 @@
 
 
 <!-- Si sale esto es que ya se actualizo ¯\_(ツ)_/¯ -->
-<!-- # de veces actualizado: 11 -->
+<!-- # de veces actualizado: 12 -->
 
 <!-- Abner-Sama! <3/ -->
 
