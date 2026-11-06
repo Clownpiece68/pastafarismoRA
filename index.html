@@ -3,13 +3,116 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-face-aframe.prod.js"></script>
+
+      <!-- CSSSHIT -->
+	  <style>
+        .hidden {
+            display: none;
+        }
+       </style>
   </head>
   <body>
-    <a-scene mindar-face embedded color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
-      <a-camera active="false" position="0 0 0"></a-camera>
-      <a-entity mindar-face-target="anchorIndex: 1">
-	<a-sphere color="green" radius="0.1"></a-sphere>
-      </a-entity>
-    </a-scene>
+	  <!-- SECCIONES DE LA PAGINA -->
+
+	  <!-- ||SECCION DE INICIO|| -->
+	<section id="home" class="screen">
+		<button id="start" onclick="showScreen("filters")" >Start</button>
+    </section>
+
+
+	  <!-- ||SECCION DE FILTROS|| -->
+    <section id="filters" class="screen hidden">
+        <section id="filter-screen" class="screen hidden">
+
+    <!-- Armado de MindAR -->
+        <a-scene
+          mindar-face="autoStart: false"
+          embedded
+          color-space="sRGB"
+          renderer="colorManagement: true, physicallyCorrectLights"
+          vr-mode-ui="enabled: false"
+          device-orientation-permission-ui="enabled: false">
+
+            <a-camera active="false" position="0 0 0"></a-camera>
+
+			<!-- Modelos -->
+            <a-entity mindar-face-target="anchorIndex: 1">
+
+                <a-sphere id="green" color="green" radius="0.1"></a-sphere>
+
+            </a-entity>
+
+        </a-scene>
+
+    <!-- controles -->
+        <div class="filter-controls">
+            <button id="previous-filter">Previous</button>
+            <button id="next-filter">Next</button>
+            <button id="take-photo" onclick="showScreen("preview")">Take picture</button>
+        </div>
+    </section>
+
+	<!-- ||SECCION DE FOTO|| -->
+    <section id="preview" class="screen hidden">
+        <img id="photo-preview">
+        <button id="save-photo">Save</button>
+        <button id="discard-photo" onclick="showScreen("filters")">Return</button>
+    </section>
+
+<!-- JAVASHIT -->
+	 
+    <script>
+		function showScreen(screenId) {
+            // Oculta todo
+            document.querySelectorAll(".screen").forEach(screen => {
+              screen.classList.add("hidden");
+	        });
+            // Luego muestra
+            document.getElementById(screenId).classList.remove("hidden");
+        }
+	</script>
+
+	  
   </body>
 </html>
+
+
+<!-- Si sale esto es que ya se actualizo ¯\_(ツ)_/¯ -->
+<!-- # de veces actualizado: 3 -->
+
+<!-- Abner-Sama! <3/ -->
+
+<!--
+
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣿⡟⠈⠘⡅⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⣼⡟⠁⠀⠀⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⡽⠋⠀⠀⠀⡰⠇⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣀⣄⣀⠀⢀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⡰⢡⠞⠀⠀⠀⠀⣠⡏⠀⠀⠀⠀⠀⠀⠀⠀⠀⡾⠁⠀⠀⠀⠉⠉⠑⠠⣄⣀⠀⠄⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⡊⣠⠏⠀⠀⠀⣠⠞⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⠁⣧⢣⡀⠀⠀⠀⠀⠀⠀⠀⢱⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠘⢱⣿⠀⠀⠴⢫⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡞⠀⠻⡄⢱⢦⣤⣤⣤⡀⠀⠀⠀⢇⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⢠⢸⠏⢧⠠⠄⢸⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢰⡇⠀⠀⣍⣈⣿⡿⠿⣿⣿⣷⣔⠀⠘⡄⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⢸⠀⠀⡾⠀⠀⢸⡧⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⠇⠀⣸⠏⢹⣿⣷⡇⠈⠙⠉⠉⣷⠀⢸⡆⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⢰⠀⣿⠃⠀⠀⢸⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣼⠀⠀⣿⠀⣻⣿⣿⡇⠀⠀⠀⠀⢹⠀⣬⢧⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠰⡐⣿⡀⠀⠀⣿⢅⡄⠀⠀⠀⠀⠀⠀⢀⣠⠞⠀⠀⢰⣿⣿⣿⣱⠟⠀⠀⠀⠠⠚⠀⠐⠃⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⣧⣘⣧⣰⣦⡿⠭⠽⠿⠜⠛⠚⠒⡼⠋⠀⢀⣠⣶⣿⣿⡿⠛⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⢾⡿⠿⣧⣿⡧⠀⠀⠀⠀⠀⠀⣠⡅⣠⣾⠿⣻⣿⠛⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⢀⡔⠋⠀⠀⠙⠒⠃⠀⠀⠀⠀⠀⠰⣻⣿⣿⣿⠞⠁⠀⠓⣆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⣠⠎⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢄⠀⠀⠀⠉⠉⠁⠀⠀⠀⠀⠈⢆⠱⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⡰⠁⠀⠀⠀⠀⠀⠀⢺⡄⠀⠀⠡⠈⡆⠄⢡⣘⡆⠀⠄⠀⠀⠀⠀⠈⣟⠂⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⣲⠃⡄⠀⠀⠀⡄⠀⢸⡎⠘⡀⠠⠤⡒⣃⣟⠉⠁⠘⠀⠸⠀⠀⠀⠀⠢⡈⠌⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠠⢠⠇⣼⠀⠀⠀⠀⡇⠠⢸⡇⠀⣧⣰⡰⠔⢎⣡⣤⣀⣐⡃⠀⡅⠠⠀⠀⠀⢣⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⢸⢠⢿⠀⡀⠀⠀⠀⢠⠘⠇⠀⠙⠁⢀⡴⠋⠁⠀⠈⢛⢆⠀⡇⠀⡄⢰⠀⢸⢆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⢠⢸⠇⠸⠀⢣⠀⠀⢠⡸⡟⠒⠄⠀⠀⠈⠀⠀⠀⠐⠋⠁⡎⠀⣿⠀⡇⢸⠀⠸⣼⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠈⠎⠀⠀⠰⠈⢦⠀⠀⢹⡓⠒⠲⠀⠀⠀⡠⠀⠀⠀⠀⢰⠃⠀⡏⠀⡇⢸⠀⠀⡯⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⢠⢈⡆⠀⠀⡟⣄⠀⠀⠐⠁⠀⠀⠀⢀⡠⢿⠀⠀⡇⠀⡅⡼⠀⠀⢇⠠⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⢙⡗⠀⠀⠀⠈⡍⠒⠢⠤⢤⡴⠚⠉⢀⡜⠀⢠⣅⣀⠃⠁⠀⠀⠈⢇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⣾⠀⠀⠀⠀⠀⠁⡰⠊⢱⠋⠁⢀⡠⠚⢀⠀⣼⣤⡈⢳⣤⡀⠀⠀⠈⠳⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⣰⠃⠀⠀⠀⢀⡴⣿⠁⠀⣸⡦⠘⠁⠀⠀⣸⢠⣿⣿⣴⣾⣿⣿⢦⠀⠀⠀⠸⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⢀⠎⠀⠀⠀⠘⣯⠀⡼⢠⡎⠉⡇⠀⣀⢴⢾⠁⢸⣿⣿⣿⣿⣿⣿⣿⣷⠀⠀⠀⠈⢦⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⢠⠊⠀⠀⠀⢰⣼⠟⣷⡇⢸⣇⣠⣧⠚⣱⠃⣿⠀⣾⣿⣿⣿⣿⣿⡿⣻⣿⡆⠀⠀⠀⠀⠱⣄⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⢠⠃⠀⠀⠀⢠⢻⣏⣤⣹⡧⠚⠛⡷⠀⢠⣣⡞⠻⠀⣿⣿⣿⣿⣿⣿⢳⣿⣿⣿⡀⠀⢀⠀⠀⠘⢤⠀⠀⠀⠀⠀
+⠀⡠⠰⠃⠀⠀⠀⢀⣾⣾⣿⣿⣿⡇⠀⢀⡇⡰⢣⣷⣤⣴⠀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⢷⡀⠀⢆⠀⠀⠀⠑⢤⠀⠀⠀
+⢠⠃⠀⠀⠀⠀⠀⡜⣼⣿⣿⣿⣿⣷⡴⠋⣀⣼⣿⣿⡟⠛⠀⠟⠿⢿⣿⣿⣿⣿⣿⣿⣿⡟⣷⠀⠈⠆⠀⠀⠀⢌⠱⡐⢄
+⢸⠀⠀⠀⠀⠀⠠⣷⣿⣿⣿⣿⣿⣥⣴⣾⣿⣿⠟⠻⣷⣶⣶⣤⣤⣿⣿⣿⣿⣿⣿⣿⣿⣿⢿⠀⠀⠈⠄⠠⠀⠀⢦⠑⢾
+
+ -->
