@@ -80,7 +80,7 @@
             mindar-face="autoStart: false"
             embedded
             color-space="sRGB"
-            renderer="colorManagement: true, physicallyCorrectLights"
+            renderer="colorManagement: true, physicallyCorrectLights preserveDrawingBuffer: true"
             vr-mode-ui="enabled: false"
             device-orientation-permission-ui="enabled: false">
 
@@ -116,7 +116,7 @@
     <section id="preview" class="screen hidden">
         <h2>Guardar?</h2>
         <img id="photo-preview">
-        <button id="save-photo">Save</button>
+        <button id="save-photo" onclick="savePhoto()>Save</button>
         <button onclick="showScreen('filters')">Return</button>
     </section>
 
@@ -125,8 +125,10 @@
         const scene = document.querySelector("a-scene");
         const model = document.querySelector("#model");
         const models = ["plastico", "dobleasa","unaasa"];
+        const previewImage = document.querySelector("#photo-preview");
         let currentModel = 0;
         let arStarted = false;
+        let photoURL = null;
 
         // Navegacion
         function showScreen(screenId) {
@@ -144,7 +146,6 @@
         }
 
         // Cambiar entre modelos
-
         function changeModel(modelId) {
             model.setAttribute("gltf-model",`./${modelId}.glb`);
         }
@@ -162,6 +163,67 @@
             }
             changeModel(models[currentModel]);
         }
+
+        // Tomar foto
+        async function capturePhoto() {
+            console.log("Proceso de foto inicializado");
+            const video = document.querySelector("video");
+            const arCanvas = scene.canvas;
+            
+            if (!video || !arCanvas) {
+                console.error("Onta la camara o el canvas pa");
+                return;
+            }
+            if (video.readyState < 2) {
+                console.error("No esta lista la camara pa");
+                return;
+            }
+            // Crea un canvas para combinar ambos
+            const photoCanvas = document.createElement("canvas");
+            const width = video.videoWidth;
+            const height = video.videoHeight;
+            photoCanvas.width = width;
+            photoCanvas.height = height;
+            const context = photoCanvas.getContext("2d");
+            // Dibuja la imagen de la camara
+            context.drawImage(video, 0, 0, width, height);
+            // Dibuja la imagen del AR
+            context.drawImage(arCanvas, 0, 0, width, height);
+
+            // Convierte la imagen en un blob
+            photoCanvas.toBlob((blob) => {
+                if (!blob) {
+                    console.error("No se pudo crear la foto pa");
+                    return;
+                }
+                // Si ya hay una url, la deshace
+                if (photoURL) {
+                    URL.revokeObjectURL(photoURL);
+                }
+                // Guarda la foto
+                photoURL = URL.createObjectURL(blob);
+                // La muestra en el preview
+                previewImage.src = photoURL;
+                // Abre el preview
+                showScreen("preview");
+                console.log("Ya quedo precioso");
+            }, "image/png");
+        }
+
+        // Guardar la foto
+         function savePhoto() {
+            if (!photoURL) {
+                console.error("No hay foto pa");
+                return;
+            }
+            const link = document.createElement("a");
+            link.href = photoURL;
+            link.download = "pastafarismo.png";
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+        
     </script>
 
 </body>
@@ -170,7 +232,7 @@
 
 
 <!-- Si sale esto es que ya se actualizo ¯\_(ツ)_/¯ -->
-<!-- # de veces actualizado: 28 -->
+<!-- # de veces actualizado: 29 -->
 
 <!-- Abner-Sama! <3/ -->
 
