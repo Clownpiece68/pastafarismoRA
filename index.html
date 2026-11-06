@@ -110,6 +110,18 @@
 			}
 			changeModel(models[currentModel]);
 		}
+
+		document.querySelectorAll("a-asset-item").forEach(asset => {
+
+    asset.addEventListener("loaded", () => {
+        console.log("Asset loaded:", asset.id);
+    });
+
+    asset.addEventListener("error", () => {
+        console.error("Asset failed:", asset.id);
+    });
+
+});
 	</script>
 
 	  
@@ -118,7 +130,7 @@
 
 
 <!-- Si sale esto es que ya se actualizo ¯\_(ツ)_/¯ -->
-<!-- # de veces actualizado: 17 -->
+<!-- # de veces actualizado: 18 -->
 
 <!-- Abner-Sama! <3/ -->
 
