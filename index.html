@@ -5,11 +5,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Pastafarismo RA</title>
+    <title>Pastafarismo</title>
 
     <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-face-aframe.prod.js"></script>
 
+    <!-- CSSSHIT -->
     <style>
         body {
             margin: 0;
@@ -67,15 +68,15 @@
 
 <body>
 
-    <!-- HOME SCREEN -->
+    <!-- PANTALLA INICIO -->
     <section id="home" class="screen">
-        <h1>Pastafarismo RA</h1>
-        <p>Put a pasta strainer on your head!</p>
+        <h1>Pastafarismo</h1>
+        <img src="url"></img>
         <button id="start" onclick="startAR()">Start</button>
     </section>
 
 
-    <!-- AR FILTER SCREEN -->
+    <!-- PANTALLA DE FILTROS -->
     <section id="filters" class="screen hidden">
 
         <a-scene
@@ -91,17 +92,8 @@
                 position="0 0 0">
             </a-camera>
 
-            <!-- FACE TRACKING ANCHOR -->
             <a-entity mindar-face-target="anchorIndex: 1">
-
-                <!-- TEST BOX: SHOULD APPEAR ON YOUR FACE -->
-                <a-box
-                    color="red"
-                    position="0 0 0"
-                    scale="0.1 0.1 0.1">
-                </a-box>
-
-                <!-- 3D MODEL -->
+                <!-- Modelos -->
                 <a-entity
                     id="model"
                     gltf-model="./plastico.glb"
@@ -109,13 +101,11 @@
                     rotation="0 0 0"
                     scale="0.1 0.1 0.1">
                 </a-entity>
-
             </a-entity>
-
         </a-scene>
 
 
-        <!-- FILTER CONTROLS -->
+        <!-- Controles -->
         <div class="filter-controls">
             <button onclick="previousModel()">Previous</button>
             <button onclick="nextModel()">Next</button>
@@ -125,142 +115,100 @@
     </section>
 
 
-    <!-- PHOTO PREVIEW SCREEN -->
+    <!-- PANTALLA DE FOTO -->
     <section id="preview" class="screen hidden">
-        <h2>Your picture</h2>
-
-        <img id="photo-preview" alt="Captured photo">
-
+        <h2>Guardar?</h2>
+        <img id="photo-preview">
         <button id="save-photo">Save</button>
         <button onclick="showScreen('filters')">Return</button>
     </section>
 
-
+    <!-- JAVASHIT -->
     <script>
-
-        // --------------------------------
-        // REFERENCES
-        // --------------------------------
-
         const scene = document.querySelector("a-scene");
         const model = document.querySelector("#model");
-
-        const models = [
-            "plastico",
-            "dobleasa",
-            "unaasa"
-        ];
-
+        const models = ["plastico", "dobleasa","unaasa"];
         let currentModel = 0;
         let arStarted = false;
 
-
-        // --------------------------------
-        // SCREEN NAVIGATION
-        // --------------------------------
-
+        // Navegacion
         function showScreen(screenId) {
-
             document.querySelectorAll(".screen").forEach(screen => {
                 screen.classList.add("hidden");
             });
-
             document.getElementById(screenId).classList.remove("hidden");
         }
 
-
-        // --------------------------------
-        // START AR
-        // --------------------------------
-
-        async function startAR() {
-
+        // Inicializa el AR
+        function startAR() {
             showScreen("filters");
-
-            if (arStarted) return;
-
             const arSystem = scene.systems["mindar-face-system"];
-
-            if (!arSystem) {
-                console.error("MindAR system not found!");
-                return;
-            }
-
-            try {
-                await arSystem.start();
-                arStarted = true;
-                console.log("AR started successfully!");
-            } catch (error) {
-                console.error("Could not start AR:", error);
-            }
+            arSystem.start();
         }
 
-
-        // --------------------------------
-        // MODEL SWITCHING
-        // --------------------------------
+        // Cambiar entre modelos
 
         function changeModel(modelId) {
-
-            if (!model) {
-                console.error("Model entity not found!");
-                return;
-            }
-
-            console.log("Loading model:", modelId);
-
-            model.setAttribute(
-                "gltf-model",
-                `./${modelId}.glb`
-            );
+            model.setAttribute("gltf-model",`./${modelId}.glb`);
         }
-
-
         function nextModel() {
-
             currentModel++;
-
             if (currentModel >= models.length) {
                 currentModel = 0;
             }
-
             changeModel(models[currentModel]);
         }
-
-
         function previousModel() {
-
             currentModel--;
-
             if (currentModel < 0) {
                 currentModel = models.length - 1;
             }
-
             changeModel(models[currentModel]);
         }
-
-
-        // --------------------------------
-        // MODEL LOADING EVENTS
-        // --------------------------------
-
-        model.addEventListener("model-loaded", () => {
-            console.log("Model successfully loaded!");
-        });
-
-
-        model.addEventListener("model-error", (event) => {
-            console.error("Model loading error:", event.detail);
-        });
-
-
-        // --------------------------------
-        // INITIALIZATION
-        // --------------------------------
-
-        console.log("Pastafarismo RA initialized!");
-
     </script>
 
 </body>
 </html>
+
+
+
+<!-- Si sale esto es que ya se actualizo ¯\_(ツ)_/¯ -->
+<!-- # de veces actualizado: 23 -->
+
+<!-- Abner-Sama! <3/ -->
+
+<!--
+
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣿⡟⠈⠘⡅⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⣼⡟⠁⠀⠀⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⡽⠋⠀⠀⠀⡰⠇⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣀⣄⣀⠀⢀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⡰⢡⠞⠀⠀⠀⠀⣠⡏⠀⠀⠀⠀⠀⠀⠀⠀⠀⡾⠁⠀⠀⠀⠉⠉⠑⠠⣄⣀⠀⠄⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⡊⣠⠏⠀⠀⠀⣠⠞⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⠁⣧⢣⡀⠀⠀⠀⠀⠀⠀⠀⢱⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠘⢱⣿⠀⠀⠴⢫⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡞⠀⠻⡄⢱⢦⣤⣤⣤⡀⠀⠀⠀⢇⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⢠⢸⠏⢧⠠⠄⢸⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢰⡇⠀⠀⣍⣈⣿⡿⠿⣿⣿⣷⣔⠀⠘⡄⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⢸⠀⠀⡾⠀⠀⢸⡧⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⠇⠀⣸⠏⢹⣿⣷⡇⠈⠙⠉⠉⣷⠀⢸⡆⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⢰⠀⣿⠃⠀⠀⢸⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣼⠀⠀⣿⠀⣻⣿⣿⡇⠀⠀⠀⠀⢹⠀⣬⢧⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠰⡐⣿⡀⠀⠀⣿⢅⡄⠀⠀⠀⠀⠀⠀⢀⣠⠞⠀⠀⢰⣿⣿⣿⣱⠟⠀⠀⠀⠠⠚⠀⠐⠃⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⣧⣘⣧⣰⣦⡿⠭⠽⠿⠜⠛⠚⠒⡼⠋⠀⢀⣠⣶⣿⣿⡿⠛⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⢾⡿⠿⣧⣿⡧⠀⠀⠀⠀⠀⠀⣠⡅⣠⣾⠿⣻⣿⠛⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⢀⡔⠋⠀⠀⠙⠒⠃⠀⠀⠀⠀⠀⠰⣻⣿⣿⣿⠞⠁⠀⠓⣆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⣠⠎⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢄⠀⠀⠀⠉⠉⠁⠀⠀⠀⠀⠈⢆⠱⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⡰⠁⠀⠀⠀⠀⠀⠀⢺⡄⠀⠀⠡⠈⡆⠄⢡⣘⡆⠀⠄⠀⠀⠀⠀⠈⣟⠂⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⣲⠃⡄⠀⠀⠀⡄⠀⢸⡎⠘⡀⠠⠤⡒⣃⣟⠉⠁⠘⠀⠸⠀⠀⠀⠀⠢⡈⠌⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠠⢠⠇⣼⠀⠀⠀⠀⡇⠠⢸⡇⠀⣧⣰⡰⠔⢎⣡⣤⣀⣐⡃⠀⡅⠠⠀⠀⠀⢣⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⢸⢠⢿⠀⡀⠀⠀⠀⢠⠘⠇⠀⠙⠁⢀⡴⠋⠁⠀⠈⢛⢆⠀⡇⠀⡄⢰⠀⢸⢆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⢠⢸⠇⠸⠀⢣⠀⠀⢠⡸⡟⠒⠄⠀⠀⠈⠀⠀⠀⠐⠋⠁⡎⠀⣿⠀⡇⢸⠀⠸⣼⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠈⠎⠀⠀⠰⠈⢦⠀⠀⢹⡓⠒⠲⠀⠀⠀⡠⠀⠀⠀⠀⢰⠃⠀⡏⠀⡇⢸⠀⠀⡯⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⢠⢈⡆⠀⠀⡟⣄⠀⠀⠐⠁⠀⠀⠀⢀⡠⢿⠀⠀⡇⠀⡅⡼⠀⠀⢇⠠⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⢙⡗⠀⠀⠀⠈⡍⠒⠢⠤⢤⡴⠚⠉⢀⡜⠀⢠⣅⣀⠃⠁⠀⠀⠈⢇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⣾⠀⠀⠀⠀⠀⠁⡰⠊⢱⠋⠁⢀⡠⠚⢀⠀⣼⣤⡈⢳⣤⡀⠀⠀⠈⠳⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⣰⠃⠀⠀⠀⢀⡴⣿⠁⠀⣸⡦⠘⠁⠀⠀⣸⢠⣿⣿⣴⣾⣿⣿⢦⠀⠀⠀⠸⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⢀⠎⠀⠀⠀⠘⣯⠀⡼⢠⡎⠉⡇⠀⣀⢴⢾⠁⢸⣿⣿⣿⣿⣿⣿⣿⣷⠀⠀⠀⠈⢦⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⢠⠊⠀⠀⠀⢰⣼⠟⣷⡇⢸⣇⣠⣧⠚⣱⠃⣿⠀⣾⣿⣿⣿⣿⣿⡿⣻⣿⡆⠀⠀⠀⠀⠱⣄⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⢠⠃⠀⠀⠀⢠⢻⣏⣤⣹⡧⠚⠛⡷⠀⢠⣣⡞⠻⠀⣿⣿⣿⣿⣿⣿⢳⣿⣿⣿⡀⠀⢀⠀⠀⠘⢤⠀⠀⠀⠀⠀
+⠀⡠⠰⠃⠀⠀⠀⢀⣾⣾⣿⣿⣿⡇⠀⢀⡇⡰⢣⣷⣤⣴⠀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⢷⡀⠀⢆⠀⠀⠀⠑⢤⠀⠀⠀
+⢠⠃⠀⠀⠀⠀⠀⡜⣼⣿⣿⣿⣿⣷⡴⠋⣀⣼⣿⣿⡟⠛⠀⠟⠿⢿⣿⣿⣿⣿⣿⣿⣿⡟⣷⠀⠈⠆⠀⠀⠀⢌⠱⡐⢄
+⢸⠀⠀⠀⠀⠀⠠⣷⣿⣿⣿⣿⣿⣥⣴⣾⣿⣿⠟⠻⣷⣶⣶⣤⣤⣿⣿⣿⣿⣿⣿⣿⣿⣿⢿⠀⠀⠈⠄⠠⠀⠀⢦⠑⢾
+
+ -->
+
