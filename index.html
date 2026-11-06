@@ -94,8 +94,24 @@
 
 		// Funcionnes para cambiar modelos 
 		function changeModel(modelId) {
-			model.setAttribute("gltf-model", `#${modelId}`);
-		}
+
+    const asset = document.querySelector(`#${modelId}`);
+
+    console.log("Selected model:", modelId);
+    console.log("Asset element:", asset);
+
+    if (!asset) {
+        console.error("Asset ID not found:", modelId);
+        return;
+    }
+
+    const src = asset.getAttribute("src");
+
+    console.log("Original path:", src);
+    console.log("Resolved URL:", new URL(src, document.baseURI).href);
+
+    model.setAttribute("gltf-model", `#${modelId}`);
+
 		function nextModel() {
 			currentModel++;
 			if (currentModel >= models.length) {
@@ -110,18 +126,6 @@
 			}
 			changeModel(models[currentModel]);
 		}
-
-		document.querySelectorAll("a-asset-item").forEach(asset => {
-
-    asset.addEventListener("loaded", () => {
-        console.log("Asset loaded:", asset.id);
-    });
-
-    asset.addEventListener("error", () => {
-        console.error("Asset failed:", asset.id);
-    });
-
-});
 	</script>
 
 	  
@@ -130,7 +134,7 @@
 
 
 <!-- Si sale esto es que ya se actualizo ¯\_(ツ)_/¯ -->
-<!-- # de veces actualizado: 18 -->
+<!-- # de veces actualizado: 19 -->
 
 <!-- Abner-Sama! <3/ -->
 
