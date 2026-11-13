@@ -89,8 +89,12 @@
                 position="0 0 0">
             </a-camera>
 
+            <a-assets>
+                <a-asset-item id="headModel" src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.2.5/examples/face-tracking/assets/sparkar/headOccluder.glb"></a-asset-item>
+            </a-assets>
+
             <a-entity mindar-face-target="anchorIndex: 151">
-                <!-- Modelos -->
+                <a-gltf-model mindar-face-occluder position="0 -0.3 0.15"rotation="0 0 0" scale="0.065 0.065 0.065" src="#headModel"></a-gltf-model>
                 <a-entity
                     id="model"
                     gltf-model="./dobleasa.glb"
@@ -232,7 +236,7 @@
 
 
 <!-- Si sale esto es que ya se actualizo ¯\_(ツ)_/¯ -->
-<!-- # de veces actualizado: 39 -->
+<!-- # de veces actualizado: 40 -->
 
 <!-- Abner-Sama! <3/ -->
 
