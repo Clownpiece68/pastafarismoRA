@@ -61,7 +61,7 @@
 
         .filter-controls {
             position: absolute;
-            bottom: 30px;
+            bottom: 80px;
             left: 0;
             width: 100%;
             display: flex;
@@ -127,22 +127,6 @@
             object-fit: contain;
             display: block;
             margin-bottom: 10px;
-        }
-
-        #photo-preview {
-            display: block;
-            width: 100%;
-            height: auto;
-            object-fit: contain;
-        }
-        
-        #photo-frame {
-            position: absolute;
-            inset: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: fill;
-            pointer-events: none;
         }
         
         
@@ -215,9 +199,7 @@
     <!-- PANTALLA DE FOTO -->
     <section id="preview" class="screen hidden">
         <img id="save-title" src="./assets/savetitle.png" alt="Savetitle">
-        <div class="photo-container">
             <img id="photo-preview" src="">
-            <img id="photo-frame" src="./assets/frame.png">
         </div>
         <button id="save-photo" onclick="savePhoto()">
             <img src="./assets/save.png" alt="Save">
@@ -339,7 +321,7 @@
 
 
 <!-- Si sale esto es que ya se actualizo ¯\_(ツ)_/¯ -->
-<!-- # de veces actualizado: 71 -->
+<!-- # de veces actualizado: 72 -->
 
 <!-- Abner-Sama! <3/ -->
 
