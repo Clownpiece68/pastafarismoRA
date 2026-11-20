@@ -106,7 +106,9 @@
     <section id="home" class="screen">
         <h1>Pastafarismo</h1>
         <img src="./placeholder.png" width="70" height="70"></img>
-        <button id="start" onclick="startAR()">Start</button>
+        <button id="start" onclick="startAR()">
+                <img src="./assets/start.png" alt="Start">
+        </button>
     </section>
 
 
@@ -145,9 +147,15 @@
 
         <!-- Controles -->
         <div class="filter-controls">
-            <button onclick="previousModel()">Previous</button>
-            <button onclick="capturePhoto()">Take picture</button>
-            <button onclick="nextModel()">Next</button>
+            <button onclick="previousModel()">
+                <img src="./assets/previous.png" alt="Previous">
+            </button>
+            <button onclick="capturePhoto()">
+                <img src="./assets/takepicture.png" alt="TakePicture">
+            </button>
+            <button onclick="nextModel()">
+                <img src="./assets/next.png" alt="Next">
+            </button>
         </div>
 
     </section>
@@ -157,8 +165,12 @@
     <section id="preview" class="screen hidden">
         <h2>Guardar?</h2>
         <img id="photo-preview">
-        <button id="save-photo" onclick="savePhoto()">Save</button>
-        <button onclick="showScreen('filters')">Return</button>
+        <button id="save-photo" onclick="savePhoto()">
+            <img src="./assets/save.png" alt="Save">
+        </button>
+        <button onclick="showScreen('filters')">
+            <img src="./assets/return.png" alt="Return">
+        </button>
     </section>
 
     <!-- JAVASHIT -->
@@ -273,7 +285,7 @@
 
 
 <!-- Si sale esto es que ya se actualizo ¯\_(ツ)_/¯ -->
-<!-- # de veces actualizado: 62 -->
+<!-- # de veces actualizado: 63 -->
 
 <!-- Abner-Sama! <3/ -->
 
