@@ -105,7 +105,7 @@
         button img {
             display: block;
             max-width: 1000px;
-            max-height: 272px;
+            max-height: 50px;
             width: auto;
             height: auto;
             object-fit: contain;
@@ -199,7 +199,10 @@
     <!-- PANTALLA DE FOTO -->
     <section id="preview" class="screen hidden">
         <img id="save-title" src="./assets/savetitle.png" alt="Savetitle">
-        <img id="photo-preview">
+        <div class="photo-container">
+            <img id="photo-preview" src="">
+            <img id="photo-frame" src="./assets/frame.png">
+        </div>
         <button id="save-photo" onclick="savePhoto()">
             <img src="./assets/save.png" alt="Save">
         </button>
@@ -320,7 +323,7 @@
 
 
 <!-- Si sale esto es que ya se actualizo ¯\_(ツ)_/¯ -->
-<!-- # de veces actualizado: 69 -->
+<!-- # de veces actualizado: 70 -->
 
 <!-- Abner-Sama! <3/ -->
 
