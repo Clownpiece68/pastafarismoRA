@@ -110,6 +110,24 @@
             height: auto;
             object-fit: contain;
         }
+
+        #title-logo {
+            width: 350px;
+            height: auto;
+            max-width: 80%;
+            object-fit: contain;
+            display: block;
+            margin-bottom: 20px;
+        }
+
+         #save-title {
+            width: 350px;
+            height: auto;
+            max-width: 80%;
+            object-fit: contain;
+            display: block;
+            margin-bottom: 20px;
+        }
         
         
         </style>
@@ -121,8 +139,8 @@
 
     <!-- PANTALLA INICIO -->
     <section id="home" class="screen">
-        <h1>Pastafarismo</h1>
-        <img src="./placeholder.png" width="70" height="70"></img>
+        <img id="title-logo" src="./assets/title.png" alt="Pastafarismo">
+        <img src="./assets/logo.jpg" width="70" height="70"></img>
         <button id="start" onclick="startAR()">
                 <img src="./assets/start.png" alt="Start">
         </button>
@@ -180,7 +198,7 @@
 
     <!-- PANTALLA DE FOTO -->
     <section id="preview" class="screen hidden">
-        <h2>Guardar?</h2>
+        <img id="save-title" src="./assets/savetitle.png" alt="Savetitle">
         <img id="photo-preview">
         <button id="save-photo" onclick="savePhoto()">
             <img src="./assets/save.png" alt="Save">
@@ -302,7 +320,7 @@
 
 
 <!-- Si sale esto es que ya se actualizo ¯\_(ツ)_/¯ -->
-<!-- # de veces actualizado: 65 -->
+<!-- # de veces actualizado: 66 -->
 
 <!-- Abner-Sama! <3/ -->
 
