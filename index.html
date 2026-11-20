@@ -23,7 +23,7 @@
         }
 
         .hidden {
-            display: none;
+            visibility: hidden;
             pointer-events: none;
         }
 
@@ -39,13 +39,16 @@
             flex-direction: column;
             justify-content: flex-start;
             align-items: center;
-            padding: 30px 15px;
-            gap: 15px;
+            height: 100vh;
+            overflow: hidden;
+            gap: 10px;
+            padding: 20px;
+            box-sizing: border-box;
         }
-
+        
         #photo-preview {
             max-width: 90%;
-            max-height: 60vh;
+            max-height: 65vh;
             object-fit: contain;
         }
 
@@ -254,7 +257,7 @@
 
 
 <!-- Si sale esto es que ya se actualizo ¯\_(ツ)_/¯ -->
-<!-- # de veces actualizado: 54 -->
+<!-- # de veces actualizado: 55 -->
 
 <!-- Abner-Sama! <3/ -->
 
